@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 text-gray-800 font-sans leading-normal tracking-normal">
+
+    <div class="container mx-auto py-8">
+        <h1 class="text-3xl font-bold mb-4">Login</h1>
+        <form id="login-form" class="mb-4">
+            <input type="text" id="username" name="username"
+                class="w-full border rounded py-2 px-3 mb-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Username" required>
+            <button type="submit"
+                class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">Login
+                With Passkey</button>
+        </form>
+        <h2 id="login-info" class="text-lg"></h2>
+    </div>
+
+    <!-- SimpleWebAuth CDN Link -->
+    <script src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js"></script>
+
+    <script>
+        const loginForm = document.getElementById('login-form');
+        loginForm.addEventListener('submit', async (event) => {
+            // Prevent the form from submitting
+            event.preventDefault();
+
+            // Get the username from the form
+            const username = document.querySelector('#username').value;
+
+            // Send a POST request to the server with the username
+            const response = await fetch('/login-challenge', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username }),
+            });
+            // Get the challenge result
+            const challengeResult = await response.json();
+            console.log(challengeResult);
+            if (challengeResult.error) {
+                document.getElementById('login-info').innerText = 'Login failed - User not found!';
+                return;
+            }
+
+            const { options } = challengeResult;
+
+            const authenticationResult = await SimpleWebAuthnBrowser.startAuthentication(options);
+            console.log(authenticationResult);
+
+            const loginResponse = await fetch('/login-verify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, credential: authenticationResult }),
+            });
+            const loginResult = await loginResponse.json();
+            console.log(loginResult);
+
+            if (loginResult.success) {
+                document.getElementById('login-info').innerText = 'Login successful!';
+                alert('Login successful!');
+            } else {
+                document.getElementById('login-info').innerText = 'Login failed!';
+                alert('Login failed!');
+            }
+        });
+    </script>
+</body>
+
+</html>

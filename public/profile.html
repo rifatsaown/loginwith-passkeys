@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 text-gray-800 font-sans leading-normal tracking-normal">
+
+    <div class="container mx-auto py-8">
+        <h1 class="text-3xl font-bold mb-4">Profile Page</h1>
+        <button id="register-passkey-btn"
+            class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none focus:ring-2 focus:ring-blue-500">Register
+            Passkey</button>
+    </div>
+
+    <!-- SimpleWebAuth CDN Link -->
+    <script src="https://unpkg.com/@simplewebauthn/browser/dist/bundle/index.umd.min.js"></script>
+
+    <!-- Register Passkey Script -->
+    <script>
+        // Get the Register Passkey Button
+        const registerPasskeyBtn = document.getElementById('register-passkey-btn');
+
+        // Register Passkey Button Click Event
+        registerPasskeyBtn.addEventListener('click', async (e) => {
+            const url = new URL(window.location);
+            const userId = url.searchParams.get('userId');
+
+            const response = await fetch('/register-challenge', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId }),
+            });
+            // Get the challenge result
+            const challengeResult = await response.json();
+            const { options } = challengeResult;
+
+            const authenticationResult = await SimpleWebAuthnBrowser.startRegistration(options);
+
+            const registerResponse = await fetch('/register-verify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId, credential: authenticationResult }),
+            });
+            const registerResult = await registerResponse.json();
+            console.log(registerResult);
+
+            if (registerResult.verified) {
+                alert('Passkey registered successfully!');
+                window.location.href = `/login.html`;
+            } else {
+                alert('Passkey registration failed!');
+            }
+        });
+    </script>
+
+</body>
+
+</html>

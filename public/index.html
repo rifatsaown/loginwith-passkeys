@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passkeys</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-gray-100 text-gray-800 font-sans leading-normal tracking-normal">
+
+    <div class="container mx-auto">
+        <h1 class="text-3xl font-bold mb-4">Passkeys</h1>
+        <p class="mb-6">This is a practice project that helps to learn how Passkeys work and how to implement them in a
+            project for signin purposes and two-factor authentication purposes.</p>
+
+        <h2 class="text-xl font-bold mb-2">Info</h2>
+        <p class="mb-6">
+            <span class="text-red-600">I use in-memory database to store the user data and passkey data. so if you don't
+                find your regisation info
+                it's normal.</span>
+            <br>
+            I use Express.js to create the server and
+            use SimpleWebAuthn to implement the passkey system in the project.
+        </p>
+
+        <h2 class="text-xl font-bold mb-2">Register a Passkey</h2>
+        <a href="./register.html"
+            class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200">Register</a>
+
+        <h2 class="text-xl font-bold mb-2">Login with Passkey</h2>
+        <a href="./login.html"
+            class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200">Login</a>
+
+
+        <h2 class="text-xl font-bold mb-2">Passkeys</h2>
+        <p class="mb-6">Passkeys is a passwordless authentication system that uses public key cryptography to
+            authenticate users. It is a secure and easy-to-use alternative to traditional passwords.</p>
+
+        <h2 class="text-xl font-bold mb-2">How it works</h2>
+        <p class="mb-6">Passkeys work by generating a public/private key pair for each user. The private key is stored
+            securely on the user's device, while the public key is stored on the server. When a user wants to
+            authenticate, they sign a challenge with their private key and send it to the server. The server verifies
+            the signature using the user's public key and grants access if the signature is valid.</p>
+
+        <h2 class="text-xl font-bold mb-2">Why use Passkeys</h2>
+        <ul class="list-disc pl-6 mb-6">
+            <li>Secure: Passkeys uses public key cryptography, which is much more secure than passwords.</li>
+            <li>Convenient: Passkeys are easy to use and don't require users to remember complex passwords.</li>
+            <li>Phishing-resistant: Passkeys are resistant to phishing attacks, since the user's private key is never
+                sent over the network.</li>
+        </ul>
+
+        <h2 class="text-xl font-bold mb-2">Getting started</h2>
+        <p class="mb-6">To get started with Passkeys, you'll need to create an account and generate a public/private
+            key pair. You can then use your private key to sign challenges and authenticate with Passkeys-enabled
+            services.</p>
+
+        <h2 class="text-xl font-bold mb-2">Register a Passkey</h2>
+        <a href="./register.html"
+            class="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-200">Register</a>
+    </div>
+
+</body>
+
+</html>
