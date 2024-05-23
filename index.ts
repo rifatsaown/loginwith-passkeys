@@ -1,7 +1,7 @@
 import { generateAuthenticationOptions, generateRegistrationOptions, verifyAuthenticationResponse, verifyRegistrationResponse } from '@simplewebauthn/server';
 import express, { type Express, type Request, type Response } from 'express';
 
-const PORT = 5000;
+const PORT = 3000;
 const app: Express  = express();
 
 app.use(express.json());
@@ -124,6 +124,6 @@ app.post('/login-verify', async (req: Request, res: Response) => {
 });
 
 // run server in lan network
-app.listen(PORT as number, '192.168.10.87', () => {
-    console.log(`Server started at http://192.168.10.87:${PORT}`);
+app.listen(PORT as number, () => {
+    console.log(`Server running on http://localhost:${PORT}`);    
 });
